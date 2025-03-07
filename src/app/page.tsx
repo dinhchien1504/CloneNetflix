@@ -1,101 +1,87 @@
-import Image from "next/image";
+import Navbar from "../../component/Navbar";
+import Billboard from "../../component/Billboard";
+import MovieList from "../../component/MovieList";
+
+const movies = [
+  {
+    id: 1,
+    title: "Inception",
+    description:
+      "A skilled thief, the absolute best in the art of extraction, enters the dream world to steal valuable secrets.",
+    videoUrl:
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+    thumbnailUrl:
+    "https://m.media-amazon.com/images/I/91kFYg4fX3L._AC_SY679_.jpg",
+
+    genre: "Sci-Fi",
+    duration: "2h 28m",
+  },
+  {
+    id: 2,
+    title: "The Dark Knight",
+    description:
+      "Batman faces the Joker, a criminal mastermind who wants to plunge Gotham into anarchy.",
+    videoUrl:
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    thumbnailUrl:
+    "https://m.media-amazon.com/images/I/91kFYg4fX3L._AC_SY679_.jpg",
+
+    genre: "Action",
+    duration: "2h 32m",
+  },
+  {
+    id: 3,
+    title: "Interstellar",
+    description:
+      "A team of explorers travels through a wormhole in space in an attempt to ensure humanity's survival.",
+    videoUrl:
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+    thumbnailUrl:
+      "https://m.media-amazon.com/images/I/91kFYg4fX3L._AC_SY679_.jpg",
+    genre: "Adventure",
+    duration: "2h 49m",
+  },
+  {
+    id: 4,
+    title: "Parasite",
+    description:
+      "A poor family cons their way into becoming the servants of a rich family, but their easy life gets complicated.",
+    videoUrl:
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+    thumbnailUrl:
+    "https://m.media-amazon.com/images/I/91kFYg4fX3L._AC_SY679_.jpg",
+
+    genre: "Thriller",
+    duration: "2h 12m",
+  },
+  {
+    id: 5,
+    title: "Avengers: Endgame",
+    description:
+      "After Thanos wipes out half of the universe, the Avengers assemble to restore balance.",
+    videoUrl:
+      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    thumbnailUrl:
+      "https://m.media-amazon.com/images/I/81ExhpBEbHL._AC_SY679_.jpg",
+    genre: "Superhero",
+    duration: "3h 1m",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <>
+      <Navbar />
+      <Billboard />
+      <div className="px-40">
+        {/* Truyền danh sách movies vào MovieList */}
+        <MovieList title="Trending Now" data={movies} />
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      <div className="px-40">
+        {/* Truyền danh sách movies vào MovieList */}
+        <MovieList title="Your Favorite" data={movies} />
+      </div>
+    </>
   );
 }
