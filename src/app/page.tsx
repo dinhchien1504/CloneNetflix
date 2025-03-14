@@ -1,6 +1,7 @@
 import Navbar from "../../component/Navbar";
 import Billboard from "../../component/Billboard";
 import MovieList from "../../component/MovieList";
+import InfoModal from "../../component/InfoModal";
 
 const movies = [
   {
@@ -71,6 +72,7 @@ const movies = [
 export default function Home() {
   return (
     <>
+      {/* <InfoModal visible onClose={()=> {}}/> */}
       <Navbar />
       <Billboard />
       <div className="px-40">

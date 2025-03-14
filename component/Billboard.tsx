@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
+import PlayButton from './PlayButton';
 
 const Billboard = () => {
     const data = {
         bigBuckBunny: {
+            id: '1',
             title: "Big Buck Bunny",
             description: "Three rodents amuse themselves by harassing creatures of the forest. However, when they harass a big rabbit, he gets his sweet revenge.",
             videoUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
@@ -11,6 +13,7 @@ const Billboard = () => {
             duration: "10 minutes"
         },
         sintel: {
+            id: '2',
             title: "Sintel",
             description: "A lonely young woman, Sintel, helps and befriends a dragon, whom she calls Scales. She embarks on a journey to find him when they are separated.",
             videoUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
@@ -19,6 +22,7 @@ const Billboard = () => {
             duration: "15 minutes"
         },
         tearsOfSteel: {
+            id: '3',
             title: "Tears of Steel",
             description: "In an apocalyptic future, a group of soldiers and scientists takes refuge in Amsterdam to stage a final battle against robotic invaders.",
             videoUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
@@ -52,6 +56,7 @@ const Billboard = () => {
                     {selectedVideo.description}
                 </p>
                 <div className="flex flex-row items-center mt-3 md:mt-4 gap-3">
+                    <PlayButton movieId={selectedVideo.id}/>
                     <button
                     className=' text-white  bg-white/30 rounded-md py-1 md:py-2 px-2 md:px-4 text-xs lg:text-lg font-semibold flex flex-row hover:bg-white/20 transition'
                     >
