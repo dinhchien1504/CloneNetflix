@@ -1,17 +1,13 @@
 import React from 'react';
 import { isEmpty as lodashIsEmpty } from 'lodash';
 import MovieCard from './MovieCard';
+import {MovieListProps} from '../src/model/MovieListProps'
 
-interface MovieListProps {
-    data: Record<string, any>[];
-    title: string;
-}
 
-const MovieList: React.FC<MovieListProps> = ({ data, title }) => {
-    // if (lodashIsEmpty(data)) {
-    //     return null;
-    // }
-    
+const MovieList: React.FC<MovieListProps> = ({ movies, title }) => {
+    // const MovieList: React.FC<MovieListProps> = ({ movies = [], title }) => {
+    console.log('movie in listM' , movies)
+    if (lodashIsEmpty(movies)) return null; // Ẩn danh mục nếu không có dữ liệu
     return (
         <div className="px-4 md:px-12 mt-4 space-y-8">
             <div>
@@ -19,7 +15,7 @@ const MovieList: React.FC<MovieListProps> = ({ data, title }) => {
                     {title}
                 </p>
                 <div className="grid grid-cols-4 gap-2">
-                    {data.map((movie) => (
+                    {movies.map((movie) => (
                         <MovieCard key={movie.id} data={movie} />
                     ))}
                 </div>

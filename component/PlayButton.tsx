@@ -1,13 +1,18 @@
+'use client'
+
+import { useRouter } from "next/navigation";
+
 import React from 'react'
 import { BsFillPlayFill } from 'react-icons/bs';
 interface PlayButtonProps {
-    movieId: string;
+    slug: string;
 }
 
-const PlayButton: React.FC<PlayButtonProps> = ({movieId}) => {
+const PlayButton: React.FC<PlayButtonProps> = ({slug}) => {
+  const router = useRouter();
     return (
     <button 
-    // onClick={()=> Router.push()}
+    onClick={()=> router.push(`/watch/${slug}`)}
     className='bg-white
     rounded-md
     py-1 md:py-2
@@ -23,7 +28,7 @@ const PlayButton: React.FC<PlayButtonProps> = ({movieId}) => {
     '
     >
        <BsFillPlayFill size={25} className=''/>
-        
+        Play
     </button>
   )
 }

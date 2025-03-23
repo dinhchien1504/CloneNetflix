@@ -8,3 +8,33 @@ html {
   color: black;
 
 }
+
+@keyframes smooth-pop {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.05); }
+  80% { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-smooth-pop {
+  animation: smooth-pop 0.4s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+/* Thêm vào global.css */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari và Opera */
+}
+
+/* Snap effect tùy chỉnh */
+@supports (scroll-snap-type: x mandatory) {
+  .snap-x {
+    scroll-snap-type: x mandatory;
+  }
+  .snap-start {
+    scroll-snap-align: start;
+  }
+}

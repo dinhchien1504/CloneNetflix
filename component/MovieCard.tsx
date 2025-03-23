@@ -10,18 +10,20 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
     // You can replace this with actual functionality like opening a modal or navigating to a trailer.
     // console.log(`Playing movie: ${data.title}`);
   };
-
+  // console.log ( 'data in moviecard' , data)
+  if(!data) return;
   return (
     <div className='group bg-zinc-900 col-span h-[12vw] relative'>
       <img 
         className='cursor-pointer object-cover transition duration-300 shadow-xl rounded-md group-hover:opacity-90 sm:group-hover:opacity-0 w-full h-[12vw]'
-        src={data.thumbnailUrl} 
+        src={`https://img.ophim.live/uploads/movies/${data.thumb_url }`} 
         alt={`Movie Thumbnail - ${data.title}`} // More descriptive alt text
       />
-      
-      <div className="opacity-0 absolute top-0 transition duration-200 z-10 invisible sm:visible delay-300 w-full scale-0 group-hover:scale-110 group-hover:-translate-y-[6vw]  group-hover:opacity-100">
+      <div className="opacity-0 absolute top-0 transition-all duration-300 z-10 invisible sm:visible delay-300 w-full scale-0 group-hover:scale-110 group-hover:-translate-y-[6vw]  group-hover:opacity-100 
+ease-in-out 
+">
         <img 
-          src={data.thumbnailUrl} 
+          src={`https://img.ophim.live/uploads/movies/${data.poster_url}`} 
           className='cursor-pointer object-cover transition duration-300 shadow-xl rounded-t-md w-full h-[12vw]' 
           alt={`Movie Thumbnail - ${data.title}`} 
         />
@@ -35,18 +37,21 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
               <BsFillPlayFill size={30} />
             </div>
           </div>  
+          <p className="text-green-400 font-semibold mt-4">
+             <span className='text-white'>{data.title}</span>
+          </p>
 
           <p className="text-green-400 font-semibold mt-4">
-            New <span className='text-white'>{data.year}</span>
+            Year : <span className='text-white'>{data.year}</span>
           </p>
 
           <div className="flex flex-row mt-4 gap-2 items-center">
-            <p className='text-white text-[10px] lg:text-sm'>{data.duration}</p>
+            <p className='text-white text-[10px] lg:text-sm'>{data.category}</p>
           </div>
 
-          <div className="flex flex-row mt-4 gap-2 items-center">
+          {/* <div className="flex flex-row mt-4 gap-2 items-center">
             <p className='text-white text-[10px] lg:text-sm'>{data.genre}</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
