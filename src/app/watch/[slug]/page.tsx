@@ -17,9 +17,9 @@ const Watch = () => {
   const movieSlug = pathSlug.split("/")[2];
 
   // State lưu dữ liệu phim
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<Movie>();
   const [loading, setLoading] = useState(true);
-  const [videoSrc, setVideoSrc] = useState(null);
+  const [videoSrc, setVideoSrc] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,17 +32,7 @@ const Watch = () => {
         if (result) {
           setData(result);
           console.log("📌 Movie Data:", result);
-          if (result && result?.episodes?.length > 0) {
-            const episodeIndex = ep ? parseInt(ep) - 1 : 0;
-            const episode = result?.episodes[episodeIndex]?.server_data?.link_embed;
-      
-            if (episode) {
-              setVideoSrc(episode);
-            } else {
-              console.error("⚠️ No valid video link found for episode", ep);
-              setVideoSrc(null);
-            }
-          }
+         
         } else {
           console.error("⚠️ No data returned from API");
         }
@@ -54,22 +44,17 @@ const Watch = () => {
     };
 
       fetchData();
-     
-  }, []);
+   
+  }, [movieSlug]);
 
-  // useEffect(() => {
-  //   if (data?.episodes?.length > 0) {
-  //     const episodeIndex = ep ? parseInt(ep) - 1 : 0;
-  //     const episode = data.episodes[episodeIndex]?.server_data?.link_embed;
-
-  //     if (episode) {
-  //       setVideoSrc(episode);
-  //     } else {
-  //       console.error("⚠️ No valid video link found for episode", ep);
-  //       setVideoSrc(null);
-  //     }
-  //   }
-  // }, [data, ep]);
+  useEffect(() => {
+    if (data && data?.episodes?.length > 0) {
+      const episodeIndex = ep ? parseInt(ep) - 1 : 0;
+      const episode = data?.episodes[0]?.server_data[episodeIndex]?.link_embed || "";
+      setVideoSrc(episode)
+      console.log(episode)
+    }
+  }, [data, ep]);
 
     // console.log ('this is ep ', data.episodes[0].server_data)
   return (
@@ -90,7 +75,13 @@ const Watch = () => {
           Đang tải dữ liệu...
         </div>
       ) : videoSrc ? (
-        <video autoPlay controls className="h-full w-full" src={videoSrc} />
+        // <video autoPlay controls className="h-full w-full"/>
+        <iframe
+        src={videoSrc}
+        width="100%"
+        height="100%"
+        allowFullScreen
+      ></iframe>
       ) : (
         <div className="flex justify-center items-center h-full text-white">
           Không có tập phim để phát!
