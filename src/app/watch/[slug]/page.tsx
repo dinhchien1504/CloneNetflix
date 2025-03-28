@@ -64,7 +64,7 @@ const Watch = () => {
         </button>
         <p className="text-white text-xl md:text-2xl font-bold">
           <span>Watching : </span>
-          {data?.movie?.name ?? "Đang tải..."}
+          {/* {data?.movie?.name ?? "Đang tải..."} */}
         </p>
       </nav>
 
