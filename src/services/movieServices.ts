@@ -32,7 +32,8 @@ export async function getMovies(page: number = 1): Promise<Movie[]> {
 
 export const getMovieDetails = async (slug: string): Promise<any | null> => {
     try {
-        // console.log(`Fetching details for: ${slug}`);
+        
+        console.log(`Fetching details for: ${slug}`);
         const res = await fetch(`${API_URL}/phim/${slug}`);
         
         if (!res.ok) {
@@ -40,7 +41,7 @@ export const getMovieDetails = async (slug: string): Promise<any | null> => {
         }
         
         const data = await res.json();
-        // console.log("API response data:", data);
+        console.log("API response data:", data);
 
         if (!data || !data.movie) {
             throw new Error("Dữ liệu không hợp lệ hoặc thiếu thông tin phim.");

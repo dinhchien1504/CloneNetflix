@@ -17,6 +17,7 @@ export default async function Page() {
   return (
     <>
       {/* <InfoModal visible = {isOpen}  onClose={closeModal}/> */}
+      <InfoModal/>
       <Navbar/>
       <Billboard movies={movies} />
       <div className="px-40">
