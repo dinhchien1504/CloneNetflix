@@ -31,7 +31,7 @@ const Billboard: React.FC<BillboardProps> = ({ movies }) => {
       .catch((err) => console.error("Lỗi khi lấy chi tiết phim:", err));
   }, [movies]);
 
-  console.log ('move in bill', movieDetail)
+  // console.log ('move in bill', movieDetail)
 
 
   if (!movieDetail) return null; // Đợi dữ liệu tải xong mới hiển thị
@@ -55,7 +55,7 @@ const Billboard: React.FC<BillboardProps> = ({ movies }) => {
 
             </p>
             <div className="flex flex-row items-center mt-3 md:mt-4 gap-3">
-                <PlayButton slug={movieDetail.movie.slug}/>
+                <PlayButton slug={movieDetail.movie.slug} shape="Rectangle" content="Play"/>
                 <button
                 className=' text-white  bg-white/30 rounded-md py-1 md:py-2 px-2 md:px-4 text-xs lg:text-lg font-semibold flex flex-row hover:bg-white/20 transition'
                 >

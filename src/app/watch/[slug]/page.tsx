@@ -28,16 +28,14 @@ const Watch = () => {
       setLoading(true);
       try {
         const result = await getMovieDetails(movieSlug);
-        console.log ('data', result)
         if (result) {
           setData(result);
-          console.log("📌 Movie Data:", result);
          
         } else {
-          console.error("⚠️ No data returned from API");
+          console.error("No data returned from API");
         }
       } catch (error) {
-        console.error("❌ Error fetching data:", error);
+        console.error(" Error fetching data:", error);
       } finally {
         setLoading(false);
       }
@@ -56,17 +54,17 @@ const Watch = () => {
     }
   }, [data, ep]);
 
-    // console.log ('this is ep ', data.episodes[0].server_data)
+    console.log ('this is ep ', data)
   return (
     <div className="h-screen w-screen bg-black">
       <nav className="fixed w-full p-4 z-10 flex flex-row items-center gap-8 bg-black bg-opacity-70">
-        <AiOutlineArrowLeft className="text-white" size={40} />
+        
         <button className="text-white" onClick={() => router.push("/")}>  
-          Quay lại
+        <AiOutlineArrowLeft className="text-white" size={40} />
         </button>
-        <p className="text-white text-1xl md:text-3xl font-bold">
-          <span>Watching: </span>
-          {/* {data?.movie?.name ?? "Đang tải..."} */}
+        <p className="text-white text-xl md:text-2xl font-bold">
+          <span>Watching : </span>
+          {data?.movie?.name ?? "Đang tải..."}
         </p>
       </nav>
 
