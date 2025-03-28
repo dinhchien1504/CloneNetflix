@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import useInfoModal from "../hooks/useInfoModal";
+import useInfoModal from "@/hooks/useInfoModal";
 import { getMovieDetails } from "@/services/movieServices";
 
 const InfoModal: React.FC = () => {

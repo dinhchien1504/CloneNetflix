@@ -1,6 +1,6 @@
 import { Movie } from "@/model/Movie";
 
-const API_URL = "https://ophim1.com/";
+const API_URL = " https://ophim1.com/";
 export async function getMovies(page: number = 1): Promise<Movie[]> {
   try {
       const response = await fetch(`${API_URL}/danh-sach/phim-moi-cap-nhat?page=${page}`);

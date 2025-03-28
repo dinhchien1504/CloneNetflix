@@ -1,12 +1,12 @@
 // "use client"
-import Navbar from "../../component/Navbar";
-import Billboard from "../../component/Billboard";
-import MovieList from "../../component/MovieList";
-import InfoModal from "../../component/InfoModal";
+import Navbar from "@/component/Navbar";
+import Billboard from "@/component/Billboard";
+import MovieList from "@/component/MovieList";
+import InfoModal from "@/component/InfoModal";
 import { getMovies } from "@/services/movieServices";
 import { GetServerSideProps } from "next";
 import { Movie } from "@/model/Movie";
-import useInfoModal from "../../hooks/useInfoModal";
+import useInfoModal from "@/hooks/useInfoModal";
 
 
 export default async function Page() {
