@@ -1,7 +1,5 @@
 import { FormSignUpState, SignupFormSchema } from "@/app/lib/definitions";
 import { User } from "@/model/User";
-import { UserLogin } from "@/model/UserLogin";
-import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { toast } from 'react-toastify'
 
