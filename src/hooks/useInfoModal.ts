@@ -11,11 +11,9 @@ const useInfoModal = create<ModalStoreInterface>((set) => ({
     slug: null, 
     isOpen: false,
     openModal: (slug) => {
-        console.log("Modal opened with slug:", slug);
         set(() => ({ isOpen: true, slug }));
     },
     closeModal: () => {
-        console.log("Modal closed");
         set(() => ({ isOpen: false, slug: null }));
     }
 }));

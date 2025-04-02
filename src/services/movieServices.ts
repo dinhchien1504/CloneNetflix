@@ -10,20 +10,7 @@ export async function getMovies(page: number = 1): Promise<Movie[]> {
           throw new Error("Invalid API response");
       }
 
-      return data.items.map((item: any) => ({
-          id: item._id,
-          title: item.name,
-          slug: item.slug,
-          origin_name: item.origin_name,
-          year: item.year,
-          category: item.category || [],
-          poster_url: item.poster_url,
-          status: item.status,
-          time: item.time,
-          thumb_url: item.thumb_url,
-          view: item.view || 0,
-          episodes: item.episodes || [],
-      }));
+      return data;
   } catch (error) {
       console.error("Error fetching movies:", error);
       return [];

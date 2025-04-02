@@ -30,7 +30,6 @@ const Watch = () => {
         const result = await getMovieDetails(movieSlug);
         if (result) {
           setData(result);
-         
         } else {
           console.error("No data returned from API");
         }
@@ -41,30 +40,35 @@ const Watch = () => {
       }
     };
 
-      fetchData();
-   
+    fetchData();
   }, [movieSlug]);
 
   useEffect(() => {
     if (data && data?.episodes?.length > 0) {
       const episodeIndex = ep ? parseInt(ep) - 1 : 0;
-      const episode = data?.episodes[0]?.server_data[episodeIndex]?.link_embed || "";
-      setVideoSrc(episode)
-      console.log(episode)
+      const episode =
+        data?.episodes[0]?.server_data[episodeIndex]?.link_embed || "";
+      setVideoSrc(episode);
+      console.log(episode);
     }
   }, [data, ep]);
 
-    console.log ('this is ep ', data)
+
   return (
     <div className="h-screen w-screen bg-black">
       <nav className="fixed w-full p-4 z-10 flex flex-row items-center gap-8 bg-black bg-opacity-70">
-        
-        <button className="text-white" onClick={() => router.push("/")}>  
-        <AiOutlineArrowLeft className="text-white" size={40} />
+        <button className="text-white cursor-pointer" onClick={() => router.push("/")}>
+          <AiOutlineArrowLeft className="text-white" size={40} />
         </button>
         <p className="text-white text-xl md:text-2xl font-bold">
           <span>Watching : </span>
-          {/* {data?.movie?.name ?? "Đang tải..."} */}
+          {data?.movie.name
+            ? `${data.movie.name} ${
+                data.movie.type.trim() !== "single"
+                  ? `- Tập ${ep === null ? 1 : ep } `
+                  : ""
+              }`
+            : "Đang tải..."}
         </p>
       </nav>
 
@@ -75,11 +79,11 @@ const Watch = () => {
       ) : videoSrc ? (
         // <video autoPlay controls className="h-full w-full"/>
         <iframe
-        src={videoSrc}
-        width="100%"
-        height="100%"
-        allowFullScreen
-      ></iframe>
+          src={videoSrc}
+          width="100%"
+          height="100%"
+          allowFullScreen
+        ></iframe>
       ) : (
         <div className="flex justify-center items-center h-full text-white">
           Không có tập phim để phát!
