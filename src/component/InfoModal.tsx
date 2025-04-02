@@ -63,7 +63,7 @@ const InfoModal: React.FC = () => {
           </div>
         ) : (
           <div className="h-[70%] flex items-center justify-center text-white bg-gray-800">
-            <img src={data.movie.poster_url} alt="" />
+            <img src={data.movie.poster_url} className="h-full w-full" alt="" />
           </div>
         )}
 

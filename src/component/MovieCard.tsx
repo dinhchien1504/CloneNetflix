@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Bs0Circle, BsFillPlayFill } from "react-icons/bs";
+import { Bs0Circle, BsFillPlayFill, BsList } from "react-icons/bs";
 import PlayButton from "./PlayButton";
 import useInfoModal from "@/hooks/useInfoModal";
 import Image from "next/image";
@@ -12,7 +12,7 @@ interface MovieCardProps {
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
-
+  console.log ('data in moviecard', data)
   const { openModal } = useInfoModal();
 
   if (!data) return;
@@ -37,6 +37,9 @@ ease-in-out
           className="cursor-pointer object-cover transition duration-300 shadow-xl rounded-t-md w-full h-[12vw]"
           alt={`Movie poster - ${data.movie.title}`}  
          width={300} height={450}
+         onClick={() => {
+          openModal(data.movie.slug);
+        }}
         />
 
         <div className="z-10 bg-zinc-800 p-2 lg:p-4 absolute w-full transition shadow-md rounded-b-md">
@@ -58,21 +61,22 @@ ease-in-out
                 openModal(data.movie.slug);
               }}
             >
-              <Bs0Circle />
+              <BsList />
               {/* <PlayButton slug={data.slug} shape = {"circle"} content =""/> */}
             </div>
           </div>
           <p className="text-green-400 font-semibold mt-4 text-xl">
             <span className="text-white">{data.movie.name}</span>
           </p>
+          
+          <div className="flex flex-row font-semibold mt-1 gap-2 items-center">
+            <p className="text-white text-md lg:text-sm">{data.movie.origin_name}</p>
+          </div>
 
-          <p className="text-green-400 font-semibold mt-4">
+          <p className="text-green-400 font-semibold mt-1">
             Year : <span className="text-white">{data.movie.year}</span>
           </p>
 
-          <div className="flex flex-row mt-4 gap-2 items-center">
-            <p className="text-white text-[10px] lg:text-sm">{data.movie.category}</p>
-          </div>
 
           {/* <div className="flex flex-row mt-4 gap-2 items-center">
             <p className='text-white text-[10px] lg:text-sm'>{data.genre}</p>
