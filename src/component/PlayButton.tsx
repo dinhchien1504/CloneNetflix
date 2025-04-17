@@ -1,6 +1,5 @@
 import { useRouter } from "next/navigation";
 import React from "react";
-import { BsFillPlayFill } from "react-icons/bs";
 
 interface PlayButtonProps {
   episodeSlug: string;

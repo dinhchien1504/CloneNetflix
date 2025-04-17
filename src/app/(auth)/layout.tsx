@@ -4,22 +4,31 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
 
-const Layout = ({
+const AuthLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
   const router = useRouter();
-   const { data: session } = useSession();
+  const { status } = useSession()
   
   useEffect(() => {
-    if(session) {
-      router.push("/");
+    if (typeof window !== 'undefined' && status === 'authenticated') {
+      router.push('/');
     }
-  }, [router,session]); // Chạy chỉ một lần khi component được mount
-  if(session) return null
+  }, [router, status]); // Chạy chỉ một lần khi component được mount
+  if(status === 'authenticated') return null
+  
+  if (status === 'loading') {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <span className="text-white text-xl animate-pulse">Đang kiểm tra đăng nhập...</span>
+      </div>
+    );
+  }
+
   return (
-    <div className='h-screen flex flex-col justify-center-center items-center opacity-80' style={{
+    <div className='h-screen flex flex-col items-center opacity-80' style={{
       backgroundImage: "url('/image/bg.jpg')"
     }}>
       <header className='self-start px-12 py-6 mx-12'>
@@ -28,8 +37,8 @@ const Layout = ({
         </Link>
       </header> 
       {children}
-      </div>
+      </div>  
   )
 }
 
-export default Layout
+export default AuthLayout

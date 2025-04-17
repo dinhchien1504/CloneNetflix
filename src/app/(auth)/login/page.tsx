@@ -30,7 +30,6 @@ const Login = () => {
       redirect: false,
     });
 
-    console.log(result)
     setLoading(false);
 
     if (result?.error) {

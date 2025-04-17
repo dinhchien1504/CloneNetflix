@@ -5,17 +5,19 @@ import useInfoModal from "@/hooks/useInfoModal";
 import { getMovieDetails } from "@/services/movieServices";
 import PlayButton from "./PlayButton";
 import { BsFillPlayFill } from "react-icons/bs";
+import { Country, Episode, MovieDetailResponse } from "@/model/MovieDetailApiRespone";
+import Image from "next/image";
+import ButtonAdd from "./ButtonAdd";
 
 const InfoModal: React.FC = () => {
-  const { slug, isOpen, closeModal } = useInfoModal();
-  const [data, setData] = useState<any>(null);
+  const { item, isOpen, closeModal } = useInfoModal();
+  const [data, setData] = useState<MovieDetailResponse | null>();
   const [showModal, setShowModal] = useState(false);
-  const [showFullContent, setShowFullContent] = useState(false);
 
   useEffect(() => {
-    if (!slug) return;
-    getMovieDetails(slug).then(setData).catch(console.error);
-  }, [slug]);
+    if (!item) return;
+    getMovieDetails(item.slug).then((data) => setData(data) ).catch(console.error);
+  }, [item]);
 
   useEffect(() => {
     if (isOpen) {
@@ -25,7 +27,6 @@ const InfoModal: React.FC = () => {
   }, [isOpen]);
 
   if (!isOpen || !data) return null;
-  console.log ('data infor' , data)
   const getEmbedUrl = (url: string) => {
     if (!url) return "";
     if (url.includes("watch?v=")) return url.replace("watch?v=", "embed/");
@@ -63,7 +64,7 @@ const InfoModal: React.FC = () => {
           </div>
         ) : (
           <div className="h-[70%] flex items-center justify-center text-white bg-gray-800">
-            <img src={data.movie.poster_url} className="h-full w-full" alt="" />
+            <Image height={200} width={200} quality={100}  src={data.movie.poster_url} className="h-full w-full object-cover" alt="" />
           </div>
         )}
 
@@ -76,7 +77,7 @@ const InfoModal: React.FC = () => {
 
         <div className="flex flex-col px-10 py-4">
           <div className="px-4 w-full">
-            <div className=" pt-4  w-full h-full  flex  items-center overflow-hidden overflow-y-auto scrollbar-hide ">
+            <div className=" pt-4  w-full h-full  flex  items-center overflow-hidden overflow-y-auto scrollbar-hide gap-4">
               <PlayButton
                 episodeSlug={""}
                 slug={data.movie.slug}
@@ -91,6 +92,7 @@ const InfoModal: React.FC = () => {
                   </>
                 }
               />
+              <ButtonAdd data={item} inInfoModal={true} />
             </div>
           </div>
           <div className="flex gap-4">
@@ -131,7 +133,7 @@ const InfoModal: React.FC = () => {
               <p className="text-gray-400 text-lg flex">
                 Quốc gia:{" "}
                 <span className="text-white text-lg">
-                  {data.movie?.country.map((c: any) => c.name).join(", ")}
+                  {data.movie.country.map((c: Country) => c.name).join(", ")}
                 </span>
               </p>
             </div>
@@ -142,14 +144,13 @@ const InfoModal: React.FC = () => {
                 Danh sách tập
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
-                {data.episodes[0]?.server_data?.map((episode: any) => (
+                {data.episodes[0]?.server_data?.map((episode: Episode) => (
                   <PlayButton
                     key={episode.slug}
                     slug={data.movie.slug}
                     episodeSlug={episode.slug}
                     shape="sql"
                     content={`Tập ${episode.name}`}
-                    
                   />
                 ))}
               </div>

@@ -1,32 +1,34 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import MovieCard from './MovieCard';
-import { BsArrow90DegLeft, BsArrowBarLeft, BsArrowLeft, BsArrowLeftCircle, BsArrowRight, BsArrowRightCircle, BsCaretLeftFill, BsCaretRightFill } from 'react-icons/bs';
+import { getMovies } from '@/services/movieServices';
+import { MovieItem, Pagination } from '@/model/MovieApiResponse';
+import PaginationComponent from './PaginationComponent';
 
-const MovieList: React.FC<{ title: string }> = ({ title }) => {
-    const [movies, setMovies] = useState<any[]>([]);
+const MovieList: React.FC<{ title: string}> = ({ title }) => {
+    const [movies, setMovies] = useState<MovieItem[]>([]);
+    const [pagination, setPagination] = useState<Pagination>();
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(false);
-    const [prevMovies, setPrevMovies] = useState<any[]>([]); // Giữ data cũ
+    const [prevMovies, setPrevMovies] = useState<MovieItem[]>([]); // Giữ data cũ
 
-    // Hàm fetch dữ liệu từ API
-    const fetchMovies = async (page: number) => {
+    // Hàm fetch dữ liệu từ API 
+    const fetchMovies = useCallback(async (page: number) => {
         setLoading(true);
         try {
-            const response = await fetch(`https://ophim1.com/danh-sach/phim-moi-cap-nhat?page=${page}`);
-            const data = await response.json();
+            const data = await getMovies(page);
             if (data?.items) {
-                setPrevMovies(movies); // Lưu lại data cũ
+                setPrevMovies(movies);
                 setMovies(data.items);
-                setTotalPages(data?.pagination?.totalPages || 1);
+                setPagination(data.pagination);
+                setCurrentPage(page); // cập nhật page khi fetch thành công
             }
         } catch (error) {
             console.error('Lỗi khi fetch dữ liệu:', error);
         } finally {
             setLoading(false);
         }
-    };
+    },[movies]);
 
     // Gọi API khi trang thay đổi
     useEffect(() => {
@@ -35,9 +37,11 @@ const MovieList: React.FC<{ title: string }> = ({ title }) => {
 
     // Xử lý chuyển trang mượt hơn
     const changePage = (newPage: number) => {
-        if (newPage < 1 || newPage > totalPages) return;
-        setCurrentPage(newPage);
-        window.history.pushState(null, '', `?page=${newPage}`); // Cập nhật URL nhưng không load lại
+        if (!pagination) return;
+        if (newPage < 1 || newPage > pagination.totalPages) return;
+
+        setCurrentPage(newPage); // trigger useEffect
+        window.history.pushState(null, '', `?page=${newPage}`);
     };
 
     return (
@@ -48,28 +52,12 @@ const MovieList: React.FC<{ title: string }> = ({ title }) => {
                 </p>
                 <div className="grid grid-cols-4 gap-2">
                     {(loading ? prevMovies : movies).map((movie) => (
-                        <MovieCard key={movie._id} data={{ movie }} />
+                        <MovieCard key={movie._id} movie={movie} />
                     ))}
                 </div>
 
                 {/* Điều hướng phân trang */}
-                <div className="flex justify-center mt-4 space-x-4 pb-10 pt-5 items-center">
-                    <button
-                        onClick={() => changePage(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className="p-4  text-white rounded-full disabled:opacity-50 hover:cursor-pointer"
-                    >
-                       <BsCaretLeftFill/>
-                    </button>
-                    <span className="text-white">Trang {currentPage} / {totalPages}</span>
-                    <button
-                        onClick={() => changePage(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                        className="p-4  text-white rounded-full disabled:opacity-50 hover:cursor-pointer"
-                    >
-                        <BsCaretRightFill/>
-                    </button>
-                </div>
+                <PaginationComponent currentPage={currentPage} totalPages={pagination ? pagination.totalPages : 1} onPageChange={changePage}  ></PaginationComponent>
             </div>
         </div>
     );
