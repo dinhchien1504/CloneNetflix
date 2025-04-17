@@ -4,6 +4,7 @@ import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "@/component/AuthProvider";
 import { getServerSession } from "next-auth";
+import { MyListProvider } from "@/context/MyListContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +33,8 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider session={session}>
-        {children}
-        </AuthProvider>
+          <MyListProvider>
+              {children}
     <ToastContainer
       position="top-right"
       autoClose={5000}
@@ -46,6 +47,8 @@ export default async function RootLayout({
       pauseOnHover
       theme="light"
       />
+          </MyListProvider>
+        </AuthProvider>
       </body>
     </html>
   );

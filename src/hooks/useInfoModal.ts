@@ -1,20 +1,21 @@
+import { MovieItem } from '@/model/MovieApiResponse';
 import { create } from 'zustand';
 
 interface ModalStoreInterface {
-    slug: string | null; // Đổi từ string sang null để tránh lỗi undefined
+    item: MovieItem | null; // Đổi từ string sang null để tránh lỗi undefined
     isOpen: boolean;
-    openModal: (slug: string) => void;
+    openModal: (item: MovieItem) => void;
     closeModal: () => void;
 }
 
 const useInfoModal = create<ModalStoreInterface>((set) => ({
-    slug: null, 
+    item: null, 
     isOpen: false,
-    openModal: (slug) => {
-        set(() => ({ isOpen: true, slug }));
+    openModal: (item) => {
+        set(() => ({ isOpen: true, item }));
     },
     closeModal: () => {
-        set(() => ({ isOpen: false, slug: null }));
+        set(() => ({ isOpen: false, item: null }));
     }
 }));
 

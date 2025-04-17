@@ -1,13 +1,7 @@
 // "use client"
-import Navbar from "@/component/Navbar";
 import Billboard from "@/component/Billboard";
 import MovieList from "@/component/MovieList";
-import InfoModal from "@/component/InfoModal";
 import { getMovies } from "@/services/movieServices";
-import { GetServerSideProps } from "next";
-import { Movie } from "@/model/Movie";
-import useInfoModal from "@/hooks/useInfoModal";
-import Footer from "@/component/Footer";
 
 
 export default async function Page() {
@@ -18,13 +12,10 @@ export default async function Page() {
   return (
     <>
       {/* <InfoModal visible = {isOpen}  onClose={closeModal}/> */}
-      <InfoModal/>
-      <Navbar/>
-      <Billboard movies={movies.items} />
+      <Billboard  items={movies?.items}/>
       <div className="px-40">
-        <MovieList title="Movies" movies={movies} />
+        <MovieList title="Movies" />
       </div>
-      <Footer/>
     </>
   );
 }

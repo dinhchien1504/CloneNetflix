@@ -43,8 +43,9 @@ const Navbar = () => {
     h-full
     '
     >
-        
+        <Link href={"/"}> 
         <Image className='h-4 lg:h-7' src="/image/netflix_logo.svg" alt="Avatar" width={100} height={100}/>
+        </Link>
         
         <div className="
         flex-row
@@ -53,11 +54,15 @@ const Navbar = () => {
         hidden
         lg:flex
         ">
+        <Link href={"/"}>
         <NavbarItem labels = 'Home' />
+        </Link>
         <NavbarItem labels = 'Series' />
-        <NavbarItem labels = 'Flims' />
+        <NavbarItem labels = 'Films' />
         <NavbarItem labels = 'New & Popular' />
-        <NavbarItem labels = 'My List' />
+        <Link href={"/my-list"}>
+          <NavbarItem labels = 'My List' />
+        </Link>
         <NavbarItem labels = 'Browse by languages' />
 
         </div>
@@ -83,7 +88,7 @@ const Navbar = () => {
           onClick={toggleAccountMenu}
           >
             <div className="w-6 h-6 lg:w-10 lg:h-10 rouded-md overflow-hidden rounded-full">
-              <Image src={"/image/avatar.png"} width={72} height={72} objectFit='cover' alt='avatar'></Image>
+              <Image src={"/image/avatar.png"} width={72} height={72} className='object-cover' alt='avatar'></Image>
             </div>
             <FaAngleDown className={`text-white transition ${showAccountMenu ? 'rotate-180' : 'rotate-0'}`} />
             <AccountMenu visible={showAccountMenu} />

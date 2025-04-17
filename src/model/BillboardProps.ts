@@ -1,5 +1,5 @@
-import { Movie } from './Movie';
+import { MovieItem } from "./MovieApiResponse";
 
 export interface BillboardProps {
-  movies: Movie[];
+    items?: MovieItem[]
 }

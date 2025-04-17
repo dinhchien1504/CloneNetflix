@@ -53,8 +53,7 @@ export async function signup(state: FormSignUpState, formData : FormData) {
   }
 }
 
-
-export const authOptions = {
+export const authOptions= {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -85,6 +84,6 @@ export const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: "jwt"
+    strategy: "jwt" as const
   }
 };

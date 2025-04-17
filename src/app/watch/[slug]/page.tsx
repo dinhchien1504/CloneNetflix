@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineArrowLeft, AiOutlineUnorderedList } from "react-icons/ai";
 import { getMovieDetails } from "@/services/movieServices";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Movie } from "@/model/Movie";
+import { MovieDetailResponse } from "@/model/MovieDetailApiRespone";
 
 const Watch = () => {
   const router = useRouter();
@@ -14,7 +14,7 @@ const Watch = () => {
   const ep = searchParams.get("ep");
   const movieSlug = pathSlug.split("/")[2];
 
-  const [data, setData] = useState<Movie | null>(null);
+  const [data, setData] = useState<MovieDetailResponse | null>();
   const [loading, setLoading] = useState(true);
   const [videoSrc, setVideoSrc] = useState<string>("");
   const [showEpisodeList, setShowEpisodeList] = useState(false);
@@ -71,7 +71,7 @@ const Watch = () => {
             : "Đang tải..."}
         </p>
         {/* Button mở danh sách tập */}
-        {data?.episodes[0]?.server_data.length > 1 && (
+        { data && data.episodes[0]?.server_data?.length > 1 && (
           <button
             className="ml-auto text-white text-lg flex items-center gap-2 bg-black opacity-65 px-3 py-1 rounded-md hover:opacity-100 relative"
             onClick={() => setShowEpisodeList(!showEpisodeList)}
@@ -83,7 +83,7 @@ const Watch = () => {
       </nav>
 
       {/* Danh sách tập nằm ngay dưới nút Danh sách tập */}
-      {showEpisodeList && data?.episodes[0]?.server_data.length > 1 && (
+      {showEpisodeList && data && data.episodes[0]?.server_data?.length > 1 && (
         <div className="absolute right-4 top-16 bg-black opacity-75 p-4 rounded-md w-64 max-h-60 overflow-y-auto z-20 overflow-hidden  scrollbar-hide ">
           <h3 className="text-white text-lg mb-2">Chọn tập phim:</h3>
           <div className="grid grid-cols-4 gap-2 ">

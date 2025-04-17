@@ -1,28 +1,27 @@
 "use client";
 import React from "react";
-import { Bs0Circle, BsFillPlayFill, BsList } from "react-icons/bs";
+import {BsFillPlayFill, BsList } from "react-icons/bs";
 import PlayButton from "./PlayButton";
 import useInfoModal from "@/hooks/useInfoModal";
 import Image from "next/image";
-import { Movie } from "@/model/Movie";
-import { DetailsMovie } from "@/model/DetailsMovie";
+import ButtonAdd from "./ButtonAdd";
+import { MovieItem } from "@/model/MovieApiResponse";
 
 interface MovieCardProps {
-  data: Movie[];
+  movie: MovieItem;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
-  console.log ('data in moviecard', data)
+const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   const { openModal } = useInfoModal();
 
-  if (!data) return;
+  if (!movie) return;
   return (
     <div className="group bg-zinc-900 col-span h-[12vw] relative">
       <Image
         className="cursor-pointer object-cover transition duration-300 shadow-xl rounded-md group-hover:opacity-90 sm:group-hover:opacity-0 w-full h-[12vw]"
         
-        src={data?.movie.thumb_url ? `https://img.ophim.live/uploads/movies/${data.movie.thumb_url}` : "/fallback-image.jpg"}
-        alt={`Movie Thumbnail - ${data.movie.thumb_url}`}
+        src={movie.thumb_url ? `https://img.ophim.live/uploads/movies/${movie.thumb_url}` : "/fallback-image.jpg"}
+        alt={`Movie Thumbnail - ${movie.thumb_url}`}
 
         width={300} height={450}
       />
@@ -33,12 +32,12 @@ ease-in-out
 "
       >
         <Image
-          src={`https://img.ophim.live/uploads/movies/${data.movie.poster_url}`}
+          src={`https://img.ophim.live/uploads/movies/${movie.poster_url}`}
           className="cursor-pointer object-cover transition duration-300 shadow-xl rounded-t-md w-full h-[12vw]"
-          alt={`Movie poster - ${data.movie.title}`}  
+          alt={`Movie poster - ${movie.name}`}  
          width={300} height={450}
          onClick={() => {
-          openModal(data.movie.slug);
+          openModal(movie);
         }}
         />
 
@@ -47,10 +46,10 @@ ease-in-out
             <div
               className="cursor-pointer w-6 h-6 lg:w-10 lg:h-10 bg-white rounded-full flex justify-center items-center transition hover:bg-neutral-300"
               // onClick={handlePlayButtonClick} // Play button click action
-              // onClick={() => openModal(data.slug)}
+              // onClick={() => openModal(slug)}
             >
               {/* <BsFillPlayFill size={30} > */}
-              <PlayButton episodeSlug={''} slug={data.movie.slug} shape={"circle"} content={<BsFillPlayFill className="hover:cursor-pointer" size={25} />} 
+              <PlayButton episodeSlug={''} slug={movie.slug} shape={"circle"} content={<BsFillPlayFill className="hover:cursor-pointer" size={25} />} 
       
              />
             </div>
@@ -58,28 +57,29 @@ ease-in-out
             <div
               className="cursor-pointer w-6 h-6 lg:w-10 lg:h-10 bg-white rounded-full flex justify-center items-center transition hover:bg-neutral-300"
               onClick={() => {
-                openModal(data.movie.slug);
+                openModal(movie);
               }}
             >
               <BsList />
-              {/* <PlayButton slug={data.slug} shape = {"circle"} content =""/> */}
+              {/* <PlayButton slug={slug} shape = {"circle"} content =""/> */}
             </div>
+            <ButtonAdd data={movie} inInfoModal={false} />
           </div>
           <p className="text-green-400 font-semibold mt-4 text-xl">
-            <span className="text-white">{data.movie.name}</span>
+            <span className="text-white">{movie.name}</span>
           </p>
           
           <div className="flex flex-row font-semibold mt-1 gap-2 items-center">
-            <p className="text-white text-md lg:text-sm">{data.movie.origin_name}</p>
+            <p className="text-white text-md lg:text-sm">{movie.origin_name}</p>
           </div>
 
           <p className="text-green-400 font-semibold mt-1">
-            Year : <span className="text-white">{data.movie.year}</span>
+            Year : <span className="text-white">{movie.year}</span>
           </p>
 
 
           {/* <div className="flex flex-row mt-4 gap-2 items-center">
-            <p className='text-white text-[10px] lg:text-sm'>{data.genre}</p>
+            <p className='text-white text-[10px] lg:text-sm'>{genre}</p>
           </div> */}
         </div>
       </div>
