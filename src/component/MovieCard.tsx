@@ -20,7 +20,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
       <Image
         className="cursor-pointer object-cover transition duration-300 shadow-xl rounded-md group-hover:opacity-90 sm:group-hover:opacity-0 w-full h-[12vw]"
         
-        src={movie.thumb_url ? `https://img.ophim.live/uploads/movies/${movie.thumb_url}` : "/fallback-image.jpg"}
+        src={movie.thumb_url.startsWith("https") ? movie.thumb_url : `https://phimimg.com/${movie.thumb_url}`}
         alt={`Movie Thumbnail - ${movie.thumb_url}`}
 
         width={300} height={450}
@@ -32,7 +32,7 @@ ease-in-out
 "
       >
         <Image
-          src={`https://img.ophim.live/uploads/movies/${movie.poster_url}`}
+          src={movie.poster_url.startsWith("https") ? movie.poster_url : `https://phimimg.com/${movie.poster_url}`}
           className="cursor-pointer object-cover transition duration-300 shadow-xl rounded-t-md w-full h-[12vw]"
           alt={`Movie poster - ${movie.name}`}  
          width={300} height={450}

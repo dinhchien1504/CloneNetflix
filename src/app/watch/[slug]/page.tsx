@@ -91,7 +91,7 @@ const Watch = () => {
               <button
                 key={index}
                 onClick={() =>
-                  router.push(`${pathSlug}?ep=${episode.name}`, {
+                  router.push(`${pathSlug}?ep=${index + 1}`, {
                     scroll: false,
                   })
                 }

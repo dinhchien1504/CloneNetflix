@@ -1,5 +1,7 @@
 'use client';
-import React, { useState } from 'react';
+import { Category, Country } from '@/model/MovieDetailApiRespone';
+import { getCategories, getCountries } from '@/services/movieServices';
+import React, { useEffect, useState } from 'react';
 
 interface SearchProps {
   onSearch: (filters: {
@@ -10,28 +12,23 @@ interface SearchProps {
   }) => void;
 }
 
-const categories = [
-  { label: 'Hành động', value: 'hanh-dong' },
-  { label: 'Tình cảm', value: 'tinh-cam' },
-  { label: 'Kinh dị', value: 'kinh-di' },
-];
-
-const countries = [
-  { label: 'Việt Nam', value: 'viet-nam' },
-  { label: 'Hàn Quốc', value: 'han-quoc' },
-  { label: 'Trung Quốc', value: 'trung-quoc' },
-];
-
 const years = Array.from({ length: 2025 - 1970 + 1 }, (_, i) => ({
   label: (1970 + i).toString(),
   value: (1970 + i).toString(),
-}));
+})).reverse();
 
 const MovieSearch: React.FC<SearchProps> = ({ onSearch }) => {
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
   const [country, setCountry] = useState('');
   const [year, setYear] = useState('');
+  const [categories, setCategories] = useState<Category[]>([])
+  const [countries, setCountries] = useState<Country[]>([])
+
+  useEffect(() => {
+    getCategories().then((data)=> setCategories(data))
+    getCountries().then((data)=> setCountries(data))
+  },[])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,8 +52,8 @@ const MovieSearch: React.FC<SearchProps> = ({ onSearch }) => {
       >
         <option value="" className='text-black'>--Thể loại--</option>
         {categories.map((item) => (
-          <option key={item.value} value={item.value} className='text-black'>
-            {item.label}
+          <option key={item._id} value={item.slug} className='text-black'>
+            {item.name}
           </option>
         ))}
       </select>
@@ -68,8 +65,8 @@ const MovieSearch: React.FC<SearchProps> = ({ onSearch }) => {
       >
         <option value="" className='text-black'>--Quốc gia--</option>
         {countries.map((item) => (
-          <option key={item.value} value={item.value} className='text-black'>
-            {item.label}
+          <option key={item._id} value={item.slug} className='text-black'>
+            {item.name}
           </option>
         ))}
       </select>
@@ -80,7 +77,7 @@ const MovieSearch: React.FC<SearchProps> = ({ onSearch }) => {
         className="p-2 rounded w-full sm:w-24" 
       >
         <option value="" className='text-black'>--Năm--</option>
-        {years.reverse().map((item) => (
+        {years.map((item) => (
           <option key={item.value} value={item.value} className='text-black'>
             {item.label}
           </option>

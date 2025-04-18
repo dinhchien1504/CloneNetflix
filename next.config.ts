@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "img.ophim.live",
+        hostname: "phimimg.com",
       },
     ],
   },

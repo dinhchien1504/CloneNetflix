@@ -41,7 +41,7 @@ const Billboard: React.FC<BillboardProps> = ({ items }) => {
   return (
     <div className=" relative h-[56.25vw]">
       <Image
-        src={`https://img.ophim.live/uploads/movies/${movieDetail.poster_url}` }
+      src={movieDetail.poster_url.startsWith("https") ? movieDetail.poster_url : `https://phimimg.com/${movieDetail.poster_url}`}
         alt={movieDetail.name || "Movie Poster"}
         fill
         className="brightness-[60%] w-full h-full object-cover"
