@@ -1,5 +1,6 @@
 export type MovieDetailResponse = {
   movie: MovieDetail;
+  episodes: EpisodeServer[];
 };
 
 export type MovieDetail = {
@@ -33,7 +34,6 @@ export type MovieDetail = {
   chieurap: boolean;
   poster_url: string;
   sub_docquyen: boolean;
-  episodes: EpisodeServer[];
 };
 
 export type TmdbInfo = {
@@ -53,13 +53,13 @@ export type TimestampInfo = {
 };
 
 export type Category = {
-  id: string;
+  _id: string;
   name: string;
   slug: string;
 };
 
 export type Country = {
-  id: string;
+  _id: string;
   name: string;
   slug: string;
 };

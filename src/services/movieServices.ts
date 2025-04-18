@@ -1,8 +1,8 @@
 import { MovieApiResponse, MovieItem } from "@/model/MovieApiResponse";
-import { MovieDetailResponse } from "@/model/MovieDetailApiRespone";
+import { Category, Country, MovieDetailResponse } from "@/model/MovieDetailApiRespone";
 import { MyList } from "@/model/MyList";
 
-const API_URL = " https://ophim1.com/v1/api/";
+const API_URL = "https://phimapi.com";
 const BE_FAKE_URL = "http://localhost:8000"
 interface SearchFilters {
     page?: number;
@@ -12,6 +12,30 @@ interface SearchFilters {
     year?: string;
   }
   
+  export const getCategories = async () : Promise<Category[]> => {
+    try {
+      const response = await fetch(`${API_URL}/the-loai`);
+      const result = await response.json();
+      
+      return result; 
+  } catch (error) {
+      console.error("Lỗi khi lấy chi tiết phim:", error);
+      return [];
+  }
+  }
+
+  export const getCountries = async () : Promise<Country[]> => {
+    try {
+      const response = await fetch(`${API_URL}/quoc-gia`);
+      const result = await response.json();
+      
+      return result; 
+  } catch (error) {
+      console.error("Lỗi khi lấy chi tiết phim:", error);
+      return [];
+  }
+  }
+
   export async function getMovies(filters: SearchFilters = {}): Promise<MovieApiResponse | null> {
     const {
       page = 1,
@@ -24,7 +48,7 @@ interface SearchFilters {
     // Nếu có từ khóa => dùng API tìm kiếm
     const isSearching = keyword || category || country || year;
   
-    const baseUrl = isSearching ? `${API_URL}/tim-kiem` : `${API_URL}/danh-sach/phim-moi-cap-nhat`;
+    const baseUrl = isSearching ? `${API_URL}/v1/api/tim-kiem` : `${API_URL}/danh-sach/phim-moi-cap-nhat-v3`;
     const queryParams = new URLSearchParams({
       page: page.toString(),
       ...(keyword && { keyword }),
@@ -36,27 +60,20 @@ interface SearchFilters {
     try {
       const response = await fetch(`${baseUrl}?${queryParams}`);
       const result = await response.json();
-  
-      if (result.status !== 'success') {
+      
+      if ((isSearching && result.status !== "success") || (!isSearching &&!result.status)) {
         throw new Error('Invalid API response');
       }
-  
-      const paginationData = result.data.params?.pagination || {
-        currentPage: 1,
-        totalItems: result.data.items.length,
-        totalItemsPerPage: result.data.items.length,
-      };
-  
-      const totalPages = Math.ceil(
-        paginationData.totalItems / paginationData.totalItemsPerPage
-      );
-  
+      if(!isSearching) {
+        return {
+          items: result.items,
+          pagination: result.pagination
+        }
+      }
+
       return {
         items: result.data.items,
-        pagination: {
-          ...paginationData,
-          totalPages,
-        },
+        pagination: result.data.params?.pagination
       };
     } catch (error) {
       console.error('Error fetching movies:', error);
@@ -70,12 +87,13 @@ export const getMovieDetails = async (slug: string): Promise<MovieDetailResponse
         const result = await response.json();
         
 
-        if (result.status !== "success") {
+        if (!result.status) {
             throw new Error("Invalid API response");
         }
         
         const res : MovieDetailResponse = {
-            movie: result.data.item,
+            movie: result.movie,
+            episodes: result.episodes
         }
 
         return res; 
@@ -166,3 +184,4 @@ export const addToMyList = async (email: string, movie: MovieItem) => {
         return false;
     }
   };
+

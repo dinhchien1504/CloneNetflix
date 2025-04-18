@@ -11,12 +11,13 @@ interface PlayButtonProps {
 const PlayButton: React.FC<PlayButtonProps> = ({ slug, shape, content, episodeSlug }) => {
   const router = useRouter();
 
+  const ep:number = Number.parseInt(episodeSlug.split("-")[1])
   return (
     <button
       onClick={() => {
         const url =
           episodeSlug && episodeSlug.trim() !== ""
-            ? `/watch/${slug}?ep=${episodeSlug}`
+            ? `/watch/${slug}?ep=${ep}`
             : `/watch/${slug}`;
         router.push(url);
       }}
