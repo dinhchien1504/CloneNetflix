@@ -4,6 +4,7 @@ import MovieCard from './MovieCard';
 import { getMovies } from '@/services/movieServices';
 import { MovieItem, Pagination } from '@/model/MovieApiResponse';
 import PaginationComponent from './PaginationComponent';
+import MovieSearch from './MovieSearch';
 
 const MovieList: React.FC<{ title: string}> = ({ title }) => {
     const [movies, setMovies] = useState<MovieItem[]>([]);
@@ -13,28 +14,33 @@ const MovieList: React.FC<{ title: string}> = ({ title }) => {
     const [prevMovies, setPrevMovies] = useState<MovieItem[]>([]); // Giữ data cũ
 
     // Hàm fetch dữ liệu từ API 
-    const fetchMovies = useCallback(async (page: number) => {
+    const fetchMovies = useCallback(async (filters: { keyword: string, category: string, country: string, year: string }, page: number) => {
         setLoading(true);
         try {
-            const data = await getMovies(page);
-            if (data?.items) {
-                setPrevMovies(movies);
-                setMovies(data.items);
-                setPagination(data.pagination);
-                setCurrentPage(page); // cập nhật page khi fetch thành công
-            }
+          const data = await getMovies({ ...filters, page });
+          if (data?.items) {
+            setPrevMovies(movies);
+            setMovies(data.items);
+            setPagination(data.pagination);
+            setCurrentPage(page); // cập nhật page khi fetch thành công
+          }
         } catch (error) {
-            console.error('Lỗi khi fetch dữ liệu:', error);
+          console.error('Lỗi khi fetch dữ liệu:', error);
         } finally {
-            setLoading(false);
+          setLoading(false);
         }
-    },[movies]);
+      }, [movies]);
+    
+      // Gọi API khi trang thay đổi hoặc khi tìm kiếm
+      useEffect(() => {
+        fetchMovies({ keyword: '', category: '', country: '', year: '' }, currentPage);
+      }, [currentPage]);
 
-    // Gọi API khi trang thay đổi
-    useEffect(() => {
-        fetchMovies(currentPage);
-    }, [currentPage]);
-
+      const handleSearch = (filters: { keyword: string, category: string, country: string, year: string }) => {
+        setCurrentPage(1); // Reset về trang đầu tiên khi tìm kiếm
+        fetchMovies(filters, 1); // Gọi API tìm kiếm
+      };
+    
     // Xử lý chuyển trang mượt hơn
     const changePage = (newPage: number) => {
         if (!pagination) return;
@@ -50,6 +56,7 @@ const MovieList: React.FC<{ title: string}> = ({ title }) => {
                 <p className="text-white text-md md:text-xl lg:text-2xl font-semibold mb-4">
                     {title}
                 </p>
+                <MovieSearch onSearch={handleSearch} />
                 <div className="grid grid-cols-4 gap-2">
                     {(loading ? prevMovies : movies).map((movie) => (
                         <MovieCard key={movie._id} movie={movie} />

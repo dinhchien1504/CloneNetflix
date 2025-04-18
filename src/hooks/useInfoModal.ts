@@ -4,7 +4,7 @@ import { create } from 'zustand';
 interface ModalStoreInterface {
     item: MovieItem | null; // Đổi từ string sang null để tránh lỗi undefined
     isOpen: boolean;
-    openModal: (item: MovieItem) => void;
+    openModal: (item: MovieItem | null) => void;
     closeModal: () => void;
 }
 
