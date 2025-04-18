@@ -8,8 +8,10 @@ import { BsFillPlayFill } from "react-icons/bs";
 import useInfoModal from "@/hooks/useInfoModal";
 import Image from "next/image";
 import { MovieDetail } from "@/model/MovieDetailApiRespone";
+import { MovieItem } from "@/model/MovieApiResponse";
 
 const Billboard: React.FC<BillboardProps> = ({ items }) => {
+  const [movie, setMovie] = useState<MovieItem | null>(null);
   const [movieDetail, setMovieDetail] = useState<MovieDetail | null>(null);
   const { openModal } = useInfoModal();
 
@@ -17,6 +19,7 @@ const Billboard: React.FC<BillboardProps> = ({ items }) => {
     if (!items || items.length === 0) return;
 
     const randomMovie = items[Math.floor(Math.random() * items.length)];
+    setMovie(randomMovie)
     // Gọi API để lấy chi tiết phim theo `slug`
     getMovieDetails(randomMovie.slug) 
       .then((data) => {
@@ -38,7 +41,7 @@ const Billboard: React.FC<BillboardProps> = ({ items }) => {
   return (
     <div className=" relative h-[56.25vw]">
       <Image
-        src={movieDetail.poster_url}
+        src={`https://img.ophim.live/uploads/movies/${movieDetail.poster_url}` }
         alt={movieDetail.name || "Movie Poster"}
         fill
         className="brightness-[60%] w-full h-full object-cover"
@@ -66,7 +69,7 @@ const Billboard: React.FC<BillboardProps> = ({ items }) => {
           />
           <button
           onClick={() => {
-            openModal(movieDetail.slug);
+            openModal(movie);
           }}
           className=" text-white  bg-white/30 rounded-md py-1 md:py-2 px-2 md:px-4 text-xs lg:text-lg font-semibold flex flex-row hover:bg-white/20 transition">
             More Infor

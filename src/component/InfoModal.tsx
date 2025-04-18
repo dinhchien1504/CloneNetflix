@@ -144,7 +144,7 @@ const InfoModal: React.FC = () => {
                 Danh sách tập
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
-                {data.episodes[0]?.server_data?.map((episode: Episode) => (
+                {data.movie.episodes[0]?.server_data?.map((episode: Episode) => (
                   <PlayButton
                     key={episode.slug}
                     slug={data.movie.slug}

@@ -1,8 +1,5 @@
 export type MovieDetailResponse = {
-  status: boolean;
-  msg: string;
   movie: MovieDetail;
-  episodes: EpisodeServer[];
 };
 
 export type MovieDetail = {
@@ -36,6 +33,7 @@ export type MovieDetail = {
   chieurap: boolean;
   poster_url: string;
   sub_docquyen: boolean;
+  episodes: EpisodeServer[];
 };
 
 export type TmdbInfo = {

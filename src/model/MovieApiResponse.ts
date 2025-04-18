@@ -1,7 +1,5 @@
 export type MovieApiResponse = {
-  status: boolean;
   items: MovieItem[];
-  pathImage: string;
   pagination: Pagination;
 };
 
