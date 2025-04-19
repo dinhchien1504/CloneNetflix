@@ -2,22 +2,21 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 interface PlayButtonProps {
-  episodeSlug: string;
+  epIndex: number;
   slug: string;
   shape: string;
   content: React.ReactNode; // Thay đổi kiểu dữ liệu từ string => ReactNode
 }
 
-const PlayButton: React.FC<PlayButtonProps> = ({ slug, shape, content, episodeSlug }) => {
+const PlayButton: React.FC<PlayButtonProps> = ({ slug, shape, content, epIndex }) => {
   const router = useRouter();
 
-  const ep:number = Number.parseInt(episodeSlug.split("-")[1])
   return (
     <button
       onClick={() => {
         const url =
-          episodeSlug && episodeSlug.trim() !== ""
-            ? `/watch/${slug}?ep=${ep}`
+        epIndex
+            ? `/watch/${slug}?epIndex=${epIndex}`
             : `/watch/${slug}`;
         router.push(url);
       }}
