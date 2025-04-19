@@ -84,7 +84,7 @@ const Watch = () => {
 
       {/* Danh sách tập nằm ngay dưới nút Danh sách tập */}
       {showEpisodeList && data && data.episodes[0]?.server_data?.length > 1 && (
-        <div className="absolute right-4 top-16 bg-black opacity-75 p-4 rounded-md w-64 max-h-60 overflow-y-auto z-20 overflow-hidden  scrollbar-hide ">
+        <div className="absolute right-4 top-16 bg-black opacity-75 p-4 rounded-md w-64 max-h-60 overflow-y-auto z-20">
           <h3 className="text-white text-lg mb-2">Chọn tập phim:</h3>
           <div className="grid grid-cols-4 gap-2 ">
             {data.episodes[0].server_data.map((episode, index) => (

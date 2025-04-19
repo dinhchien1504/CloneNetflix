@@ -39,22 +39,34 @@ interface SearchFilters {
   export async function getMovies(filters: SearchFilters = {}): Promise<MovieApiResponse | null> {
     const {
       page = 1,
-      keyword = '',
+      keyword = ' ',
       category = '',
       country = '',
       year = '',
     } = filters;
   
     // Nếu có từ khóa => dùng API tìm kiếm
-    const isSearching = keyword || category || country || year;
+    const isSearching = keyword.trim() !== '';
+    const isFilteringCategory = !isSearching && category.trim() !== '';
+    const isFilteringCountry = !isSearching && country.trim() !== '';
   
-    const baseUrl = isSearching ? `${API_URL}/v1/api/tim-kiem` : `${API_URL}/danh-sach/phim-moi-cap-nhat-v3`;
+    let baseUrl = `${API_URL}/danh-sach/phim-moi-cap-nhat-v3`;
+  
+    if (isSearching) {
+      baseUrl = `${API_URL}/v1/api/tim-kiem`;
+    } else if (isFilteringCategory) {
+      baseUrl = `${API_URL}/v1/api/the-loai/${category}`;
+    } else if (isFilteringCountry) {
+      baseUrl = `${API_URL}/v1/api/quoc-gia/${country}`;
+    }
+
     const queryParams = new URLSearchParams({
       page: page.toString(),
       ...(keyword && { keyword }),
       ...(category && { category }),
       ...(country && { country }),
       ...(year && { year }),
+      limit: "24"
     });
   
     try {
@@ -64,17 +76,16 @@ interface SearchFilters {
       if ((isSearching && result.status !== "success") || (!isSearching &&!result.status)) {
         throw new Error('Invalid API response');
       }
-      if(!isSearching) {
-        return {
-          items: result.items,
-          pagination: result.pagination
-        }
+      if(isSearching || isFilteringCategory || isFilteringCountry ) {
+              return {
+                items: result.data.items,
+                pagination: result.data.params?.pagination
+              };
       }
-
       return {
-        items: result.data.items,
-        pagination: result.data.params?.pagination
-      };
+        items: result.items,
+        pagination: result.pagination
+      }
     } catch (error) {
       console.error('Error fetching movies:', error);
       return null;
