@@ -16,7 +16,7 @@ const ModalContent: React.FC<ModalContentProps> = ({ movieData, item }) => {
     <div className="flex-1 overflow-y-auto px-8 py-6 space-y-4 scrollbar-thin scrollbar-thumb-gray-600">
       <div className="flex items-center gap-4">
         <PlayButton
-          episodeSlug={""}
+          epIndex={0}
           slug={movie.slug}
           shape="sql"
           content={
@@ -61,11 +61,11 @@ const ModalContent: React.FC<ModalContentProps> = ({ movieData, item }) => {
         <div>
           <h3 className="text-white text-2xl font-bold mb-2">Danh sách tập</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
-            {episodes[0]?.server_data?.map((episode: Episode) => (
+            {episodes[0]?.server_data?.map((episode: Episode, index) => (
               <PlayButton
                 key={episode.slug}
                 slug={movie.slug}
-                episodeSlug={episode.slug}
+                epIndex={index}
                 shape="sql"
                 content={`${episode.name}`}
               />

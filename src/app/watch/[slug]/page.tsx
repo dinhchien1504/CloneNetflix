@@ -11,7 +11,7 @@ const Watch = () => {
   const searchParams = useSearchParams();
   const pathSlug = usePathname();
 
-  const ep = searchParams.get("ep");
+  const epIndex = searchParams.get("epIndex");
   const movieSlug = pathSlug.split("/")[2];
 
   const [data, setData] = useState<MovieDetailResponse | null>();
@@ -43,12 +43,12 @@ const Watch = () => {
 
   useEffect(() => {
     if (data && data?.episodes?.length > 0) {
-      const episodeIndex = ep ? parseInt(ep) - 1 : 0;
+      const episodeIndex = epIndex ? parseInt(epIndex) : 0;
       const episode =
         data?.episodes[0]?.server_data[episodeIndex]?.link_embed || "";
       setVideoSrc(episode);
     }
-  }, [data, ep]);
+  }, [data, epIndex]);
 
   return (
     <div className="h-screen w-screen bg-black relative">
@@ -65,7 +65,7 @@ const Watch = () => {
           {data?.movie.name
             ? `${data.movie.name} ${
                 data.movie.type.trim() !== "single"
-                  ? `- Tập ${ep === null ? 1 : ep}`
+                  ? `- ${data?.episodes[0]?.server_data[epIndex ? parseInt(epIndex) : 0].name}`
                   : ""
               }`
             : "Đang tải..."}
@@ -91,12 +91,12 @@ const Watch = () => {
               <button
                 key={index}
                 onClick={() =>
-                  router.push(`${pathSlug}?ep=${index + 1}`, {
+                  router.push(`${pathSlug}?epIndex=${index}`, {
                     scroll: false,
                   })
                 }
                 className={`
-                  ${(ep === null ? 1 : Number(ep)) === index + 1 ? "bg-black opacity-70 text-white" : "bg-gray-600"}
+                  ${epIndex  &&   parseInt(epIndex) === index  ? "bg-black opacity-70 text-white" : "bg-gray-600"}
       text-white px-2 py-1 rounded hover:bg-gray-600 cursor-pointer
     `}
               >
