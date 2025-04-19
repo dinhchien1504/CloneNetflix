@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MovieCard from './MovieCard';
 import { getMovies } from '@/services/movieServices';
 import { MovieItem, Pagination } from '@/model/MovieApiResponse';
 import PaginationComponent from './PaginationComponent';
 import MovieSearch from './MovieSearch';
+import { useRouter, useSearchParams } from 'next/navigation';
 interface Filters{
   keyword: string;
   category: string;
@@ -16,16 +17,22 @@ interface Filters{
 const MovieList: React.FC<{ title: string }> = ({ title }) => {
   const [movies, setMovies] = useState<MovieItem[]>([]);
   const [pagination, setPagination] = useState<Pagination>();
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   // const [prevMovies, setPrevMovies] = useState<MovieItem[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
-  const [filters, setFilters] = useState<Filters>({
-    keyword: '',
-    category: '',
-    country: '',
-    year: ''
-  });
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const page = parseInt(searchParams.get('page') || '1');
+
+  const filters: Filters = {
+    keyword: searchParams.get('keyword') || '',
+    category: searchParams.get('category') || '',
+    country: searchParams.get('country') || '',
+    year: searchParams.get('year') || '',
+  };
 
   // Scroll lên đầu trang mỗi khi đổi trang hoặc tìm kiếm
   const scrollToSearch = () => {
@@ -34,62 +41,34 @@ const MovieList: React.FC<{ title: string }> = ({ title }) => {
     }
   };
 
-  const getFiltersFromURL = (): { filters: Filters; page: number } => {
-    const params = new URLSearchParams(window.location.search);
-    const page = parseInt(params.get('page') || '1');
-    const keyword = params.get('keyword') || '';
-    const category = params.get('category') || '';
-    const country = params.get('country') || '';
-    const year = params.get('year') || '';
-    return {
-      filters: { keyword, category, country, year },
-      page
-    };
-  };
-
   useEffect(() => {
-    const { filters, page } = getFiltersFromURL();
-    setFilters(filters);
-    setCurrentPage(page);
-  }, []);
-
-  const fetchMovies = useCallback(async (filters: Filters, page: number) => {
-    setLoading(true);
-    try {
-      const data = await getMovies({ ...filters, page });
-      if (data?.items) {
-        // setPrevMovies(movies);
-        setMovies(data.items);
-        setPagination(data.pagination);
-        setCurrentPage(page);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await getMovies({ ...filters, page });
+        if (data?.items) {
+          setMovies(data.items);
+          setPagination(data.pagination);
+        }
+      } catch (error) {
+        console.error('Lỗi khi fetch dữ liệu:', error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Lỗi khi fetch dữ liệu:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [movies]);
+    };
 
-  useEffect(() => {
-    fetchMovies(filters, currentPage);
+    fetchData();
     scrollToSearch();
-  }, [currentPage, JSON.stringify(filters)]);
+  }, [page, searchParams.toString()]);
 
   const handleSearch = (newFilters: Filters) => {
     const params = new URLSearchParams({ page: '1', ...newFilters });
-    window.history.pushState(null, '', `?${params.toString()}`);
-    setFilters(newFilters);
-    setCurrentPage(1);
-    fetchMovies(newFilters, 1);
-    scrollToSearch();
+    router.push(`?${params.toString()}`);
   };
 
   const changePage = (newPage: number) => {
-    if (!pagination || newPage < 1 || newPage > pagination.totalPages) return;
     const params = new URLSearchParams({ page: newPage.toString(), ...filters });
-    window.history.pushState(null, '', `?${params.toString()}`);
-    setCurrentPage(newPage);
-    scrollToSearch();
+    router.push(`?${params.toString()}`);
   };
 
   return (
@@ -104,13 +83,6 @@ const MovieList: React.FC<{ title: string }> = ({ title }) => {
         {loading && (
           <p className="text-center text-white text-lg py-4 animate-pulse">Đang tải phim...</p>
         )}
-
-        {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {(loading ? prevMovies : movies).map((movie) => (
-            <MovieCard key={movie._id} movie={movie} />
-          ))}
-        </div> */}
-
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {loading
   ? Array.from({ length: 8 }).map((_, index) => (
@@ -124,7 +96,7 @@ const MovieList: React.FC<{ title: string }> = ({ title }) => {
     ))}
 </div>
         <PaginationComponent
-          currentPage={currentPage}
+          currentPage={page}
           totalPages={pagination ? pagination.totalPages : 1}
           onPageChange={changePage}
         />

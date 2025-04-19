@@ -26,6 +26,15 @@ const MovieSearch: React.FC<SearchProps> = ({ onSearch }) => {
   const [countries, setCountries] = useState<Country[]>([])
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const keyword = params.get('keyword') || '';
+    const category = params.get('category') || '';
+    const country = params.get('country') || '';
+    const year = params.get('year') || '';
+    setKeyword(keyword)
+    setCategory(category)
+    setCountry(country)
+    setYear(year)
     getCategories().then((data)=> setCategories(data))
     getCountries().then((data)=> setCountries(data))
   },[])
