@@ -57,7 +57,7 @@ const Billboard: React.FC<BillboardProps> = ({ items }) => {
         </p>
         <div className="flex flex-row items-center mt-3 md:mt-4 gap-3">
           <PlayButton
-            episodeSlug={""}
+            epIndex={0}
             slug={movieDetail.slug}
             shape="Rectangle"
             content={
