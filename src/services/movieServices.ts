@@ -49,7 +49,8 @@ interface SearchFilters {
     const isSearching = keyword.trim() !== '';
     const isFilteringCategory = !isSearching && category.trim() !== '';
     const isFilteringCountry = !isSearching && country.trim() !== '';
-  
+    const isFilteringYear = !isSearching && year.trim() !== '';
+
     let baseUrl = `${API_URL}/danh-sach/phim-moi-cap-nhat-v3`;
   
     if (isSearching) {
@@ -58,6 +59,8 @@ interface SearchFilters {
       baseUrl = `${API_URL}/v1/api/the-loai/${category}`;
     } else if (isFilteringCountry) {
       baseUrl = `${API_URL}/v1/api/quoc-gia/${country}`;
+    }else if(isFilteringYear) {
+      baseUrl = `${API_URL}/v1/api/nam/${year}`;
     }
 
     const queryParams = new URLSearchParams({
@@ -76,7 +79,7 @@ interface SearchFilters {
       if ((isSearching && result.status !== "success") || (!isSearching &&!result.status)) {
         throw new Error('Invalid API response');
       }
-      if(isSearching || isFilteringCategory || isFilteringCountry ) {
+      if(isSearching || isFilteringCategory || isFilteringCountry || isFilteringYear ) {
               return {
                 items: result.data.items,
                 pagination: result.data.params?.pagination
