@@ -17,9 +17,7 @@ interface Filters{
 const MovieList: React.FC<{ title: string }> = ({ title }) => {
   const [movies, setMovies] = useState<MovieItem[]>([]);
   const [pagination, setPagination] = useState<Pagination>();
-  // const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  // const [prevMovies, setPrevMovies] = useState<MovieItem[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
 
   const searchParams = useSearchParams();
